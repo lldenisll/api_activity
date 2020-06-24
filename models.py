@@ -28,7 +28,31 @@ class Activity (Base):
     name = Column(String(80))
     person_id = Column(Integer,ForeignKey('persons.id'))
     person = relationship("Persons")
+    def __repr__(self):
+        return '<Activity {}>'.format(self.name)
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
 
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
+
+class Users(Base):
+    __tablename__ = 'users'
+    id = Column(Integer,primary_key=True)
+    login = Column(String(20), unique=True)
+    password = Column(String(20))
+
+    def __repr__(self):
+        return '<User {}>'.format(self.login)
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
 def init_db():
     Base.metadata.create_all(bind=engine)
 
